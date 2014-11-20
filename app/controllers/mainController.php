@@ -7,18 +7,18 @@ class mainController {
 		echo '<pre>';
 		var_dump(mvc());
 
-		return view('welcome', $data);
+		return view('main/index', $data);
 	}
 
 	public function indexPostAjaxAction() {	
 		$data['name'] = print_r($_POST, true);
 
-		return view('welcome', $data);
+		return view('main/index', $data);
 	}
 
 	public function indexPostAction() {	
 		$data['name'] = print_r($_POST, true);
 
-		return view('welcome', $data);
+		return view('main/index', $data);
 	}
 }

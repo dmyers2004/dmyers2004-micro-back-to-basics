@@ -121,7 +121,7 @@ function mvc_error($string) {
 	file_put_contents('../app/var/logs/error.log', date('Y-m-d H:i:s ').$string.chr(10), FILE_APPEND);
 
 	/* don't show to much unless env var = DEBUG */
-	$string = (mvc()->run_code != 'DEBUG') ? 'Sorry a fatal error has happened' : $string;
+	$string = (mvc()->run_code != 'DEBUG') ? 'Sorry a fatal error has occurred' : $string;
 
 	/* show the error */
 	echo $string;
