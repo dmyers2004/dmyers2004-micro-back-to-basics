@@ -115,16 +115,23 @@ function view($_mvc_view_name, $_mvc_view_data = []) {
 	return ob_get_clean();
 }
 
+function config($filename) {
+	$config = [];
+	
+	if (file_exists(mvc()->app.'/config/'.$filename.'.php')) {
+		include mvc()->app.'/config/'.$filename.'.php';
+	}
+
+	return $config;
+}
+
 /* single die method */
 function mvc_error($string) {
 	/* save errors in a simple log */
 	file_put_contents('../app/var/logs/error.log', date('Y-m-d H:i:s ').$string.chr(10), FILE_APPEND);
 
 	/* don't show to much unless env var = DEBUG */
-	$string = (mvc()->run_code != 'DEBUG') ? 'Sorry a fatal error has occurred' : $string;
-
-	/* show the error */
-	echo $string;
+	echo (mvc()->run_code != 'DEBUG') ? 'Sorry a fatal error has occurred' : $string;
 
 	/* exit clean */
 	exit(1);

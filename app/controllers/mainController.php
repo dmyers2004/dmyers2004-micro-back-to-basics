@@ -21,4 +21,13 @@ class mainController {
 
 		return view('main/index', $data);
 	}
+	
+	public function configAction() {
+		$config = config('application');
+		
+		$data['foo'] = $config['title'];
+	
+		return view('main/config', $data);
+	}
+	
 }
