@@ -77,9 +77,9 @@ function mvc() {
 }
 
 /* class autoloader */
-function mvc_autoloader($name) {
+function mvc_autoloader($name,$load = true) {
 	/* autoload controllers or libraries */
-	$filename = mvc()->app.'/'.((substr($name, -10) != 'Controller') ? 'libraries' : 'controllers').'/'.$name.'.php';
+	$filename = ($name{0} == '/') ? $name : mvc()->app.'/'.((substr($name, -10) != 'Controller') ? 'libraries' : 'controllers').'/'.$name.'.php';
 
 	/* is the file their? */
 	if (!file_exists($filename)) {
@@ -88,19 +88,17 @@ function mvc_autoloader($name) {
 	}
 
 	/* then let's load it */
-	require_once $filename;
+	if ($load) {
+		require_once $filename;
+	}
 }
 
 /* auto load view and extract view data */
 function view($_mvc_view_name, $_mvc_view_data = []) {
 	/* what file are we looking for? */
 	$_mvc_view_file = mvc()->app.'/views/'.$_mvc_view_name.'.php';
-
-	/* is it there? if not return nothing */
-	if (!file_exists($_mvc_view_file)) {
-		/* file not found so bail */
-		mvc_error('View File '.$_mvc_view_file.' Not Found');
-	}
+	
+	mvc_autoloader($_mvc_view_file,false);
 
 	/* extract out view data and make it in scope */
 	extract($_mvc_view_data);
@@ -118,9 +116,11 @@ function view($_mvc_view_name, $_mvc_view_data = []) {
 function config($filename) {
 	$config = [];
 	
-	if (file_exists(mvc()->app.'/config/'.$filename.'.php')) {
-		include mvc()->app.'/config/'.$filename.'.php';
-	}
+	$file = mvc()->app.'/config/'.$filename.'.php';
+
+	mvc_autoloader($file,false);
+
+	require $file;
 
 	return $config;
 }
