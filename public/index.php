@@ -81,7 +81,7 @@ function mvc_autoloader($name,$load = true) {
 	/* autoload controllers or libraries */
 	$filename = ($name{0} == '/') ? $name : mvc()->app.'/'.((substr($name, -10) != 'Controller') ? 'libraries' : 'controllers').'/'.$name.'.php';
 
-	/* is the file their? */
+	/* is the file there? */
 	if (!file_exists($filename)) {
 		/* simple error and exit */
 		mvc_error('File '.$filename.' Not Found');
