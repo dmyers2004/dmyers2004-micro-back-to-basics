@@ -16,8 +16,12 @@ if ($mvc->run_code == 'DEBUG') {
 	ini_set('display_errors', 1);
 }
 
-/* start session */
-session_start();
+/*
+start session - if needed
+since this hits the hard drive hard
+it can really slow speed down.
+*/
+//session_start();
 
 /* Where is this bootstrap file */
 $mvc->path = __DIR__;
@@ -69,6 +73,8 @@ if (!method_exists($controller, $method)) {
 /* call the method and echo what's returned */
 echo call_user_func_array([$controller, $method], $mvc->segs);
 
+/* all done */
+
 /* give me a reference to the global service locator */
 function mvc() {
 	global $mvc;
@@ -87,7 +93,7 @@ function mvc_autoloader($name,$load = true) {
 		mvc_error('File '.$filename.' Not Found');
 	}
 
-	/* then let's load it */
+	/* then let's load it if we need to */
 	if ($load) {
 		require_once $filename;
 	}
@@ -98,6 +104,7 @@ function view($_mvc_view_name, $_mvc_view_data = []) {
 	/* what file are we looking for? */
 	$_mvc_view_file = mvc()->app.'/views/'.$_mvc_view_name.'.php';
 	
+	/* just find out if it's there don't load it */
 	mvc_autoloader($_mvc_view_file,false);
 
 	/* extract out view data and make it in scope */
@@ -114,15 +121,17 @@ function view($_mvc_view_name, $_mvc_view_data = []) {
 }
 
 function config($filename) {
+	/* empty config array */
 	$config = [];
 	
+	/* what config are we trying to load? */
 	$file = mvc()->app.'/config/'.$filename.'.php';
 
+	/* just find out if it's there but don't load it */
 	mvc_autoloader($file,false);
-
-	require $file;
-
-	return $config;
+	
+	/* return the array it contains */
+	return $file;
 }
 
 /* single die method */

@@ -2,6 +2,10 @@
 
 class mainController {
 	public function indexAction() {	
+    return 'hello';
+	}
+
+	public function fooAction() {	
 		$data['name'] = 'Johnny Appleseed';
 
 		echo '<pre>';

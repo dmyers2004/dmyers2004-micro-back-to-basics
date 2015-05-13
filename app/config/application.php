@@ -1,3 +1,7 @@
 <?php 
 
-$config['title'] = 'Awesome Project';
+return [
+
+	['title'] => 'Awesome Project',
+
+];
